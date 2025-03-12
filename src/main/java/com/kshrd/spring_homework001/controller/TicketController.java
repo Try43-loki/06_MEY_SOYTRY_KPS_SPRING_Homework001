@@ -35,7 +35,9 @@ public class TicketController {
                     new Ticket(2, "Sophy", LocalDate.parse("2025-03-15"), "REP", "SGN", 22.50, false, TicketStatus.CANCELLED, "B22"),
                     new Ticket(3, "Vann", LocalDate.parse("2025-03-20"), "KEP", "KPS", 9.99, true, TicketStatus.CANCELLED, "C08"),
                     new Ticket(4, "Malis", LocalDate.parse("2025-03-25"), "BKK", "HCM", 35.99, true, TicketStatus.CANCELLED, "D18"),
-                    new Ticket(5, "Kosal", LocalDate.parse("2025-03-30"), "SGN", "PNH", 28.00, false, TicketStatus.COMPLETED, "E05")
+                    new Ticket(5, "Kosal", LocalDate.parse("2025-03-30"), "SGN", "PNH", 28.00, false, TicketStatus.COMPLETED, "E05"),
+                    new Ticket(6, "Kosal", LocalDate.parse("2025-03-30"), "SGN", "PNH", 28.00, false, TicketStatus.COMPLETED, "E05"),
+                    new Ticket(7, "Kosal", LocalDate.parse("2025-03-30"), "SGN", "PNH", 28.00, false, TicketStatus.COMPLETED, "E05")
             )
     );
 
@@ -43,8 +45,6 @@ public class TicketController {
     Integer tempId = 5;
 
     // get all ticket
-
-
     @GetMapping
     @Operation(summary = "Get all tickets")
     public ResponseEntity<CustomResponse<PagedResponse<Ticket>>> getTickets(@RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int size) {
@@ -113,18 +113,18 @@ public class TicketController {
 
     // search by Passenger Name
     @GetMapping("/search")
-    @Operation(summary = "Get ticket by Passenger name")
-    public ResponseEntity<CustomResponse<Ticket>> getTicket(@RequestParam String name) {
+    @Operation(summary = "Get tickets by Passenger name")
+    public ResponseEntity<CustomResponse<List<Ticket>>> getTickets(@RequestParam String name) {
 
-        Optional<Ticket> ticket = ticketList.stream().filter(t -> t.getPassengerName().equalsIgnoreCase(name)).findFirst();
+        List<Ticket> matchedTickets = ticketList.stream().filter(t -> t.getPassengerName().equalsIgnoreCase(name)).collect(Collectors.toList());
 
-        if (ticket.isEmpty()) {
-
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse<>(false, "Ticket not found", HttpStatus.NOT_FOUND, null));
+        if (matchedTickets.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse<>(false, "No tickets found for passenger: " + name, HttpStatus.NOT_FOUND, List.of()));
         }
 
-        return ResponseEntity.ok(new CustomResponse<>(true, "Ticket retrieved successfully", HttpStatus.OK, ticket.get()));
+        return ResponseEntity.ok(new CustomResponse<>(true, "Tickets retrieved successfully", HttpStatus.OK, matchedTickets));
     }
+
 
 
 
