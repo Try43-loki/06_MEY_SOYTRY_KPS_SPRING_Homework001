@@ -105,7 +105,7 @@ public class TicketController {
 
         if (ticket.isEmpty()) {
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse<>(false, "Ticket not found", HttpStatus.ACCEPTED, null));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse<>(false, "Ticket not found id : " + id , HttpStatus.ACCEPTED, null));
         }
 
         return ResponseEntity.status(HttpStatus.OK).body(new CustomResponse<>(true, "Ticket retrieved successfully", HttpStatus.ACCEPTED, ticket.get()));
@@ -167,7 +167,7 @@ public class TicketController {
             return ResponseEntity.status(HttpStatus.ACCEPTED).body(new CustomResponse<>(true, "Ticket deleted successfully", HttpStatus.OK, null));
         } else {
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse<>(false, "Ticket not found", HttpStatus.NOT_FOUND, null));
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new CustomResponse<>(false, "Ticket not found id : " + id, HttpStatus.NOT_FOUND, null));
         }
     }
 
