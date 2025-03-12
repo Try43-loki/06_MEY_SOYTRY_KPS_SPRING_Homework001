@@ -215,11 +215,11 @@ public class TicketController {
 
             @Parameter(example = "CANCELLED", in = ParameterIn.QUERY)
 
-            @RequestParam(required = false) TicketStatus ticketStatus,
+            @RequestParam(required = true) TicketStatus ticketStatus,
 
             @Parameter(in = ParameterIn.QUERY)
 
-            @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate travelDate) {
+            @RequestParam(required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate travelDate) {
 
         List<Ticket> filteredTickets = ticketList.stream().filter(t -> (ticketStatus == null || t.getTicketStatus() == ticketStatus)).filter(t -> (travelDate == null || t.getTravelDate().isEqual(travelDate))).collect(Collectors.toList());
 
